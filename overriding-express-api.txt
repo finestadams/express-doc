@@ -1,0 +1,21 @@
+The Express API consists of various methods and properties on the request and response objects. These are inherited by prototype. There are two extension points for the Express API:
+
+The global prototypes at express.request and express.response.
+App-specific prototypes at app.request and app.response.
+
+You can override the signature and behavior of existing methods with your own, by assigning a custom function.
+
+Following is an example of overriding the behavior of res.sendStatus.
+
+app.response.sendStatus = function (statusCode, type, message) {
+  // code is intentionally kept simple for demonstration purpose
+  return this.contentType(type)
+    .status(statusCode)
+    .send(message)
+}
+
+The above implementation completely changes the original signature of res.sendStatus. It now accepts a status code, encoding type, and the message to be sent to the client.
+
+The overridden method may now be used this way:
+
+res.sendStatus(404, 'application/json', '{"error":"resource not found"}')
